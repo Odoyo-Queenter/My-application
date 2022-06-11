@@ -70,6 +70,13 @@ class SignupActivity : AppCompatActivity() {
         if (pass.isBlank()){
             tilPass.error = "Password is required"
         }
+
+        if (pass.length<8){
+            tilPass.error = "password is too short"
+        }
+        if (pass.length>16){
+            tilPass.error = "password is too long"
+        }
         if (confirm.isBlank()){
             tilConfpass.error = "Confirm password"
         }
