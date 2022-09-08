@@ -3,10 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable/ic_baseline_calendar_today_24.xml" value="0.1665" />
         <entry key="app/src/main/res/drawable/splash_bg.xml" value="0.102" />
+        <entry key="app/src/main/res/layout/activity_home.xml" value="0.15729166666666666" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.19270833333333334" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.17864583333333334" />
         <entry key="app/src/main/res/layout/activity_signup.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/fragment_plan.xml" value="0.15729166666666666" />
+        <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.15625" />
       </map>
     </option>
   </component>
