@@ -6,13 +6,16 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import dev.queenter.splashscreen.R
 import dev.queenter.splashscreen.models.RegisterRequest
 import dev.queenter.splashscreen.models.RegisterResponse
-import retrofit.ApiClient
-import retrofit.ApiInterface
+import apiInterface.ApiClient
+import apiInterface.ApiInterface
+import dev.queenter.splashscreen.viewModel.UserViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -33,9 +36,12 @@ class SignupActivity : AppCompatActivity() {
     lateinit var tvLogin:TextView
     lateinit var tilPhoneNumber: TextInputLayout
     lateinit var etPhoneNumber: TextInputEditText
+    lateinit var userViewModel: UserViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val userViewModel: UserViewModel by viewModels()
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_signup)
 
@@ -112,9 +118,25 @@ class SignupActivity : AppCompatActivity() {
        val registerResponse = RegisterRequest(firstName,lastName,phonenumber,email,pass)
             makeRegistrationRequest(registerResponse)
 
+            startActivity(Intent(this,LoginActivity::class.java))
+            userViewModel.registerUser(registerResponse)
+
         }
 
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        userViewModel.registerResponseLiveData.observe(this, Observer { registerResponse->
+            Toast.makeText(baseContext, registerResponse?.message,Toast.LENGTH_LONG).show()
+            startActivity(Intent(baseContext, LoginActivity::class.java))
+        })
+
+        userViewModel.registerErrorLiveData.observe(this, Observer { error->
+            Toast.makeText(baseContext, error, Toast.LENGTH_LONG).show()
+            startActivity(Intent(baseContext,LoginActivity::class.java))
+        })
     }
     fun makeRegistrationRequest(registerRequest: RegisterRequest){
         var apiClient = ApiClient.buildApiClient(ApiInterface::class.java)
@@ -131,8 +153,6 @@ class SignupActivity : AppCompatActivity() {
                     //intent to login
                 }else{
                     val  error = response.errorBody()?.string()
-                    Toast.makeText(baseContext, error, Toast.LENGTH_LONG).show()
-                    startActivity(Intent(baseContext,LoginActivity::class.java))
 
                 }
 
